@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.TimeUtils;
 
 public class MenuPauseScreen extends BaseScreen {
+    long time;
+    long timeStart;
 
     Stage stage;
 
@@ -36,6 +38,7 @@ public class MenuPauseScreen extends BaseScreen {
     public void show() {
         stage = new Stage();
         exit = true;
+        timeStart=TimeUtils.millis();
 
         Image fon = new Image(new Texture(Gdx.files.internal("images/pause.png")));
         fon.setSize(game.width,game.height);
@@ -73,10 +76,16 @@ public class MenuPauseScreen extends BaseScreen {
             public void changed(ChangeEvent event, Actor actor) {
                 exit = false;
                 if (screen == questScreen){
+                    game.questScreen.timeMenu =TimeUtils.millis()-timeStart;
+                    game.questScreen.menu = false;
+                    game.questScreen.n_menu = 1;
                     game.questScreen.resume();
                     game.setScreen(game.questScreen);
                 }
                 else if (screen == gameScreen) {
+                    game.gameScreen.timeMenu =TimeUtils.millis()-timeStart;
+                    game.gameScreen.menu = false;
+                    game.gameScreen.n_menu = 1;
                     game.gameScreen.resume();
                     game.setScreen(game.gameScreen);
 
@@ -90,6 +99,7 @@ public class MenuPauseScreen extends BaseScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 exit = true;
+                game.gameScreen.menu = false;
                 game.setScreen(game.levelScreen);
             }
         });

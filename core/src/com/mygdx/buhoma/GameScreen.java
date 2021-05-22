@@ -37,6 +37,9 @@ public class GameScreen extends BaseScreen {
     //переменные для таймера спавна
     long timeGame= TimeUtils.millis(),timeSpawn=3000,timeLastSpawn=TimeUtils.millis()-4000;
     //переменная для количества букв в слове
+    long timeMenu;
+    byte n_menu = 0;
+    boolean menu =false;
     public int count_m;// переменная для выбора случайного слова
     //массив буквы рандомной
     Array<Integer> arrayLetter = new Array<>();
@@ -191,7 +194,7 @@ public class GameScreen extends BaseScreen {
             public void changed(ChangeEvent event, Actor actor) {
                 pause();
 
-
+                menu=true;
                 game.menuPauseScreen.setScreen("Game");
                 game.setScreen(game.menuPauseScreen);
             }
@@ -214,10 +217,11 @@ public class GameScreen extends BaseScreen {
         timeGame = TimeUtils.millis();
 
         //создание буквы по таймеру игровому (реализация через список слова ,вылет букв слова в рандомном порядке)
-        if (arrayLetter.notEmpty() && (timeGame - timeLastSpawn > timeSpawn)){
+        if (!menu && arrayLetter.notEmpty() && (timeGame - timeLastSpawn > timeSpawn+(timeMenu*n_menu))){
             int num = MathUtils.random(0,arrayLetter.size-1);
 
             Letter letter1 = new Letter();
+            n_menu=0;
 
             letter1.setPosition(400,400);
             letter1.setType(arrayLetter.get(num));

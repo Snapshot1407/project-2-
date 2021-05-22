@@ -59,6 +59,10 @@ public class QuestScreen extends BaseScreen {
     long timeIncrease = 5000;
     long timeExit = 2000;
 
+    long timeMenu;
+    byte n_menu = 0;
+    boolean menu=false;
+
     //переменная для количества букв в слове
 
     //переменная для подсчета сколько букв удалили
@@ -144,7 +148,7 @@ public class QuestScreen extends BaseScreen {
 
                 dispose();
                 game.menuPauseScreen.exit = true;
-
+                n_menu=0;
                 label_Letter.remove();
                 game.setScreen(game.gameScreen);
 
@@ -156,6 +160,8 @@ public class QuestScreen extends BaseScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 pause();
+                menu=true;
+                n_menu=0;
                 game.menuPauseScreen.setScreen("Quest");
                 game.setScreen(game.menuPauseScreen);
             }
@@ -310,10 +316,11 @@ public class QuestScreen extends BaseScreen {
 
 
 
-        if (0 < arrayLetter.size && (timeGame - timeLastSpawn - (timeIncrease * n_increase)>timeSpawn) && n_increase == 0){
+        if (!menu && 0 < arrayLetter.size && (timeGame - timeLastSpawn - (timeIncrease * n_increase)>timeSpawn+(timeMenu*n_menu)) && n_increase == 0){
             int num = MathUtils.random(0,arrayLetter.size-1);
 
             Letter letter1 = new Letter();
+            n_menu=0;
 
             letter1.setPosition(400,400);
             letter1.setType(arrayLetter.get(num));
